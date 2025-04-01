@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo" style="font-size: 24px; font-weight: bold;">📖 Our Library</div>
+      <ul class="menu">
+        <li><a href="#top" id="home-btn">HOME</a></li>
+        <li>
+          <a href="#" id="about-btn">ABOUT US</a>
+          <div id="about-us" class="info-box">
+            <p>John Aquino, estudiante del ITLA con propósito de emprendimiento.</p>
+          </div>
+        </li>
+        <li>
+          <a href="#" id="contact-btn">CONTACT</a>
+          <div id="contact-info" class="info-box">
+            <p>📞 849-359-4359</p>
+            <p>📱 IG: Donjohn0.0</p>
+            <p>🔗 FB: Don John Aquino</p>
+          </div>
+        </li>
+      </ul>
+      <div class="search-bar">
+        <input type="text" id="search-bar" placeholder="Buscar libros...">
+      </div>
+    </nav>
+  </header>
+  
+  <main>
+    <!-- Sección para mostrar los resultados de búsqueda dinámicos -->
+    <section id="search-results-section" style="display: none;">
+      <h2>Resultados de Búsqueda</h2>
+      <div id="booksList" class="book-container"></div>
+      <ul id="recent-searches"></ul>
+    </section>
+
+    <!-- Catálogo estático existente -->
+    <section class="book-section" id="static-catalog">
+      <h2>Catálogo de libros</h2>
+      <div class="book-container">
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>El retrato de Dorian Gray</h3>
+          <p>Oscar Wilde</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>Ana Karenina</h3>
+          <p>León Tolstói</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>Diez negritos</h3>
+          <p>Agatha Christie</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>El código Da Vinci</h3>
+          <p>Dan Brown</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="book-section">
+      <h2>Catálogo de libros</h2>
+      <div class="book-container">
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>El guardián entre el centeno</h3>
+          <p>J.D. Salinger</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>El proceso</h3>
+          <p>Franz Kafka</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>Las aventuras de Alicia en el país de las maravillas</h3>
+          <p>Lewis Carroll</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>Odisea</h3>
+          <p>Homero</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="book-section">
+      <h2>Catálogo de libros</h2>
+      <div class="book-container">
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>El Principito</h3>
+          <p>Antoine de Saint-Exupéry</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>El Señor de los Anillos</h3>
+          <p>J.R.R. Tolkien</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>Don Quijote de la Mancha</h3>
+          <p>Miguel de Cervantes</p>
+        </div>
+        <div class="book-card">
+          <div class="book-image"></div>
+          <h3>Historia de dos ciudades</h3>
+          <p>Charles Dickens</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 Our library. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

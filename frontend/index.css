@@ -1,0 +1,172 @@
+header {
+    background-color: #8b5a2b;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    position: fixed; /* Fija el header en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Asegura que el header esté por encima del contenido */
+    box-shadow: 0 4px 2px -2px gray; /* Agrega una sombra para destacar */
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    padding-top: 60px; /* Añadido para evitar que el contenido se quede debajo del header fijo */
+  }
+  
+  /* Otros estilos... */
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .logo {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .menu li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .menu li a:hover {
+    color: #e3d5ca; /* Cambio de color suave para un efecto hover */
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    position: relative;
+    left: -30px; /* Desplaza la barra de búsqueda un poco a la izquierda */
+  }
+  
+  .search-bar input {
+    padding: 10px;
+    border-radius: 25px;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    width: 250px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    transform: scale(1); /* Establece el tamaño inicial */
+    transition: transform 0.3s ease, border-color 0.3s ease; /* Agrega un efecto de movimiento */
+  }
+  
+  .search-bar input:focus {
+    border-color: #8b5a2b; /* Agrega un borde marrón cuando esté en foco */
+    transform: scale(1.05); /* Aumenta el tamaño cuando está enfocado */
+  }
+  
+  /* Estilos del catálogo de libros */
+  .book-section {
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .book-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #6b4222;
+    margin-bottom: 20px;
+  }
+  
+  .book-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .book-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .book-card:hover {
+    transform: translateY(-10px); /* Efecto hover para una ligera elevación */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .book-image {
+    height: 200px;
+    background-color: #ddd;
+    margin-bottom: 15px;
+    border-radius: 8px;
+  }
+  
+  .book-card h3 {
+    font-size: 18px;
+    color: #6b4222;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .book-card p {
+    font-size: 14px;
+    color: #8b5a2b;
+    font-weight: 500;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #8b5a2b;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 60px;
+  }
+  
+  footer p {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  /* Estilos para los cuadros de información */
+  .info-box {
+    display: none;
+    background-color: #8b5a2b;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 30px;
+    left: 0;
+    z-index: 10;
+    width: 200px;
+  }
+  
+  .menu li {
+    position: relative;
+  }
+  
+  .menu li a:hover + .info-box,
+  .menu li:hover .info-box {
+    display: block;
+  }
+  
+  
+  

@@ -1,0 +1,139 @@
+/* Estilos mejorados para el login */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f5f1e3, #e3d5ca);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #6b4222;
+}
+
+/* Estilos para el contenedor del formulario */
+.login-container, .register-container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+    display: none; /* Inicialmente oculto */
+}
+
+/* Estilos para el contenedor de login */
+.login-container {
+    display: block; /* Login container se muestra por defecto */
+}
+
+/* Estilos para los campos de entrada */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #8b5a2b;
+}
+
+/* Estilos para los botones */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #8b5a2b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #6b4222;
+    transform: translateY(-2px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para los enlaces de navegación entre formularios */
+a {
+    text-decoration: none;
+    color: #8b5a2b;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #6b4222;
+}
+
+/* Estilos para el formulario de registro */
+.register-container {
+    display: none; /* Oculto inicialmente */
+}
+
+.register-container h2 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #6b4222;
+}
+
+.register-container .input-group {
+    margin-bottom: 20px;
+}
+
+.register-container .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.register-container .input-group input:focus {
+    border-color: #8b5a2b;
+}
+
+/* Mejoras para los botones */
+.register-container .btn {
+    background-color: #8b5a2b;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.register-container .btn:hover {
+    background: #6b4222;
+}
+
+/* Opcionalmente, puedes añadir un pequeño margen inferior al contenedor de login o registro para dar espacio entre el formulario y los enlaces */
+.register-container p, .login-container p {
+    margin-top: 10px;
+}
+

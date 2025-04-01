@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <!-- Contenedor del formulario de login -->
+    <div class="login-container" id="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="login-form">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Usuario" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Contraseña" required>
+            </div>
+            <button class="btn" type="submit">Ingresar</button>
+        </form>
+        <p>¿No tienes cuenta? <a href="#" id="register-link">Regístrate</a></p>
+    </div>
+
+    <!-- Contenedor del formulario de registro (inicialmente oculto) -->
+    <div class="register-container" id="register-container" style="display: none;">
+        <h2>Registrarse</h2>
+        <form id="register-form">
+            <div class="input-group">
+                <input type="text" id="new-username" placeholder="Nuevo Usuario" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="new-password" placeholder="Nueva Contraseña" required>
+            </div>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Correo electrónico" required>
+            </div>
+            <button class="btn" type="submit">Registrarse</button>
+        </form>
+        <p>¿Ya tienes cuenta? <a href="#" id="back-to-login">Volver al Login</a></p>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>
