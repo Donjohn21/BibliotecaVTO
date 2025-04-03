@@ -1,5 +1,4 @@
-
-document.getElementById('login-form').addEventListener('submit', (event) => {
+document.getElementById('login-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     
     const username = document.getElementById('username').value.trim();
@@ -10,15 +9,79 @@ document.getElementById('login-form').addEventListener('submit', (event) => {
         return;
     }
     
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const user = storedUsers.find(u => u.username === username && u.password === password);
+    try {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Error al iniciar sesión');
+        }
+        
+        // Guardar token y datos de usuario
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Redirigir según el rol
+        switch(data.user.role_name) {
+            case 'admin':
+                window.location.href = 'admin-dashboard.html';
+                break;
+            case 'librarian':
+                window.location.href = 'librarian-dashboard.html';
+                break;
+            default:
+                window.location.href = 'index.html';
+        }
+    } catch (err) {
+        alert(err.message);
+        console.error('Error:', err);
+    }
+});
+
+document.getElementById('register-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
     
-    if (user) {
-        sessionStorage.setItem('loggedIn', 'true');
-        sessionStorage.setItem('username', username);
-        window.location.href = 'index.html';
-    } else {
-        alert('Credenciales incorrectas');
+    const newUsername = document.getElementById('new-username').value.trim();
+    const newPassword = document.getElementById('new-password').value.trim();
+    const email = document.getElementById('email').value.trim();
+    
+    if (!newUsername || !newPassword || !email) {
+        alert('Por favor, completa todos los campos.');
+        return;
+    }
+    
+    try {
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                username: newUsername, 
+                password: newPassword, 
+                email 
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Error al registrar');
+        }
+        
+        alert('Registro exitoso, ahora puedes iniciar sesión');
+        document.getElementById('register-container').style.display = 'none';
+        document.getElementById('login-container').style.display = 'block';
+    } catch (err) {
+        alert(err.message);
+        console.error('Error:', err);
     }
 });
 
@@ -31,33 +94,6 @@ document.getElementById('register-link').addEventListener('click', (event) => {
 
 document.getElementById('back-to-login').addEventListener('click', (event) => {
     event.preventDefault();
-    document.getElementById('register-container').style.display = 'none';
-    document.getElementById('login-container').style.display = 'block';
-});
-
-// Registro
-document.getElementById('register-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    
-    const newUsername = document.getElementById('new-username').value.trim();
-    const newPassword = document.getElementById('new-password').value.trim();
-    const email = document.getElementById('email').value.trim();
-    
-    if (!newUsername || !newPassword || !email) {
-        alert('Por favor, completa todos los campos.');
-        return;
-    }
-    
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    if (users.some(u => u.username === newUsername)) {
-        alert('El nombre de usuario ya está registrado.');
-        return;
-    }
-    
-    users.push({ username: newUsername, password: newPassword, email });
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Registro exitoso, ahora puedes iniciar sesión');
-    
     document.getElementById('register-container').style.display = 'none';
     document.getElementById('login-container').style.display = 'block';
 });
