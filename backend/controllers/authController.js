@@ -1,38 +1,49 @@
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');  // Para crear tokens JWT
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs'); // <-- ¡Esta línea es crucial!
+const Usuario = require('../models/Usuario');
+const { jwtSecret } = require('../config');
 
-// Registrar un nuevo usuario
-exports.register = async (req, res) => {
-    const { username, password, email } = req.body;
-
-    try {
-        const user = new User({ username, password, email });
-        await user.save();
-        res.status(201).json({ message: 'Usuario registrado con éxito' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error al registrar el usuario', error: err });
+exports.registrar = async (req, res) => {
+  try {
+    const { nombre, email, password } = req.body;
+    const usuarioExistente = await Usuario.findOne({ email });
+    
+    if (usuarioExistente) {
+      return res.status(400).json({ mensaje: 'El email ya está registrado' });
     }
+
+    const usuario = new Usuario({ nombre, email, password });
+    await usuario.save();
+    
+    res.status(201).json({ mensaje: 'Usuario registrado correctamente' });
+  } catch (error) {
+    res.status(500).json({ mensaje: error.message });
+  }
 };
 
-// Iniciar sesión
 exports.login = async (req, res) => {
-    const { username, password } = req.body;
-
-    try {
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
-        }
-
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Contraseña incorrecta' });
-        }
-
-        // Crear un JWT
-        const token = jwt.sign({ userId: user._id }, 'mi_clave_secreta', { expiresIn: '1h' });
-        res.status(200).json({ message: 'Inicio de sesión exitoso', token });
-    } catch (err) {
-        res.status(500).json({ message: 'Error al iniciar sesión', error: err });
+  try {
+    const { email, password } = req.body;
+    const usuario = await Usuario.findOne({ email });
+    
+    if (!usuario) {
+      return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
+
+    const esPasswordValido = await bcrypt.compare(password, usuario.password);
+    
+    if (!esPasswordValido) {
+      return res.status(401).json({ mensaje: 'Credenciales inválidas' });
+    }
+
+    const token = jwt.sign(
+      { id: usuario._id, rol: usuario.rol },
+      jwtSecret,
+      { expiresIn: '1h' }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ mensaje: error.message });
+  }
 };
