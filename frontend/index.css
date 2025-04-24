@@ -214,6 +214,7 @@ li:hover {
     transform: scale(1.05);
 }
 
+
 /* Responsive */
 @media (max-width: 768px) {
     .sidebar {
@@ -254,4 +255,188 @@ li:hover {
 #loaned-books li,
 #recommendation-list li {
     border-left: 4px solid var(--primary-color);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#search-input {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid var(--primary-color);
+    outline: none;
+    transition: all 0.3s ease;
+    width: 250px;
+    max-width: 90%;
+}
+
+#search-input:focus {
+    border-color: var(--button-hover);
+    box-shadow: 0 0 5px rgba(255, 107, 0, 0.5);
+}
+
+.search-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-btn:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el módulo de prestar */
+
+/* Contenedor de préstamo */
+.loan-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Estilo para los campos de entrada de préstamo */
+.loan-box input {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 2px solid var(--primary-color);
+    outline: none;
+    transition: all 0.3s ease;
+    width: 300px;
+    max-width: 90%;
+}
+
+.loan-box input:focus {
+    border-color: var(--button-hover);
+    box-shadow: 0 0 5px rgba(255, 107, 0, 0.5);
+}
+
+/* Botones para el préstamo */
+.loan-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Botón para solicitar préstamo */
+.loan-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto hover para el botón de préstamo */
+.loan-btn:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón para devolver el libro */
+.loan-btn.return {
+    background: #6b4222;
+}
+
+/* Efecto hover para el botón de devolución */
+.loan-btn.return:hover {
+    background: #4f2e18;
+}
+
+#book-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Centra los elementos */
+    justify-content: center;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+/* Estilo para centrar la lista de libros */
+#book-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;         /* Centra los ítems horizontalmente */
+    justify-content: center;     /* Asegura que estén bien distribuidos */
+    padding: 0;
+    list-style: none;
+    margin-top: 20px;            /* Espacio entre la barra de búsqueda y los libros */
+    display: none;               /* Oculto hasta que se realice una búsqueda */
+}
+
+/* Estilo para cada libro */
+#book-list li {
+    background: var(--card-bg, #f2f2f2); /* Fondo de los libros */
+    margin: 10px 0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#book-list li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+}
+
+/* Estilos para las notificaciones */
+#notifications {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#clear-notifications {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff4d4d; /* Rojo brillante */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto de hover para el botón */
+#clear-notifications:hover {
+    background-color: #ff3333; /* Rojo más oscuro */
+    transform: scale(1.05);
+}
+
+/* Efecto de click para el botón */
+#clear-notifications:active {
+    transform: scale(0.98);
 }

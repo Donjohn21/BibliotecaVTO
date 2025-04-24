@@ -181,33 +181,18 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRecommendations();
 });
 
-// Dark Mode
 function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-}
+    const body = document.body;
+    const toggleBtn = document.querySelector('.toggle-mode');
 
-  
-// Referencia al botón de modo oscuro
-const toggleModeButton = document.querySelector('.toggle-mode');
+    // Alternar clase de modo oscuro
+    body.classList.toggle('dark-mode');
 
-// Comprobar si hay un tema guardado en el localStorage (si es el caso, aplicarlo)
-if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode'); // Aplicar el modo oscuro
-    toggleModeButton.textContent = '🌞 '; // Cambiar el ícono del botón a sol
-} else {
-    document.body.classList.remove('dark-mode'); // Asegurarse de que el modo claro esté activo
-    toggleModeButton.textContent = '🌙 '; // Mantener el ícono de luna
-}
-
-// Función para cambiar el modo oscuro y claro
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode'); // Cambiar el tema
-    if (document.body.classList.contains('dark-mode')) {
-        toggleModeButton.textContent = '🌞'; // Si está en modo oscuro, mostrar el sol
-        localStorage.setItem('theme', 'dark'); // Guardar el modo oscuro en localStorage
+    // Cambiar el ícono dependiendo del modo
+    if (body.classList.contains('dark-mode')) {
+        toggleBtn.textContent = '☀️'; // modo oscuro activo -> mostrar ícono de sol
     } else {
-        toggleModeButton.textContent = '🌙 '; // Si está en modo claro, mostrar la luna
-        localStorage.setItem('theme', 'light'); // Guardar el modo claro en localStorage
+        toggleBtn.textContent = '🌙'; // modo claro activo -> mostrar ícono de luna
     }
 }
 

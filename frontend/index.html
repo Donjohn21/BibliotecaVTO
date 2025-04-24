@@ -1,67 +1,87 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+   
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Biblioteca Virtual</title>
     <link rel="stylesheet" href="index.css" />
-   
 </head>
 <body>
 
     <header>
         <button id="toggle-sidebar-btn" type="button" aria-label="Abrir menú lateral">☰</button>
         <h1>Biblioteca Virtual</h1>
-        <button class="toggle-mode" onclick="toggleDarkMode()" aria-label="Cambiar modo oscuro/ligero">🌙 Modo Oscuro</button>
+        <button class="toggle-mode" onclick="toggleDarkMode()" aria-label="Cambiar modo oscuro/ligero">🌙</button>
     </header>
 
     <div class="container">
         <aside class="sidebar" role="navigation" aria-label="Menú principal">
             <nav>
                 <ul role="list">
-                    <li><a href="#" data-section="search" role="link" aria-label="Buscar libros">🔍 Buscar Libros</a></li>
-                    <li><a href="#" data-section="reservations" role="link" aria-label="Mis reservas">📖 Mis Reservas</a></li>
-                    <li><a href="#" data-section="notifications" role="link" aria-label="Notificaciones">🔔 Notificaciones</a></li>
-                    <li><a href="#" data-section="loans" role="link" aria-label="Mis préstamos">📚 Préstamos</a></li>
-                    <li><a href="#" data-section="recommendations" role="link" aria-label="Recomendaciones">Recomendaciones</a></li>
+                    <li><a href="#" data-section="search">🔍 Buscar Libros</a></li>
+                    <li><a href="#" data-section="reservations">📖 Mis Reservas</a></li>
+                    <li><a href="#" data-section="notifications">🔔 Notificaciones</a></li>
+                    <li><a href="#" data-section="loans">📚 Préstamos</a></li>
+                    <li><a href="#" data-section="recommendations">Recomendaciones</a></li>
                 </ul>
             </nav>
         </aside>
 
         <main class="content">
+            <!-- Buscar Libros -->
             <section id="search" class="section">
                 <h2>Buscar Libros</h2>
-                <input type="text" id="search-book" placeholder="Buscar libro..." />
-                <button id="search-btn" type="button">Buscar</button>
-                <ul id="available-books"></ul>
+                <!-- Caja de búsqueda -->
+                <div class="search-box" style="text-align: center;">
+                    <input type="text" id="search-input" placeholder="Buscar libro..." onkeyup="searchBooks()" />
+                    <button class="search-btn" id="search-btn" type="button" onclick="searchBooks()">🔍 Buscar</button>
+                </div>
+
+                <!-- Lista de libros (Inicialmente oculta) -->
+                <ul id="book-list">
+                    <li>Harry Potter y la piedra filosofal</li>
+                    <li>El señor de los anillos</li>
+                    <li>El código Da Vinci</li>
+                    <li>La sombra del viento</li>
+                    <li>Cien años de soledad</li>
+                    <!-- Agrega más libros aquí -->
+                </ul>
             </section>
 
+            <!-- Mis Reservas -->
             <section id="reservations" class="section hidden">
                 <h2>Mis Reservas</h2>
                 <ul id="reserved-books"></ul>
             </section>
 
+            <!-- Notificaciones -->
             <section id="notifications" class="section hidden">
                 <h2>Notificaciones</h2>
                 <ul id="notifications"></ul>
-                <button id="clear-notifications" type="button">Limpiar Notificaciones</button>
+                <button id="clear-notifications" type="button">🗑️ Limpiar Notificaciones</button>
             </section>
 
+            <!-- Mis Préstamos -->
             <section id="loans" class="section hidden">
                 <h2>Mis Préstamos</h2>
-                <input type="text" id="loan-book" placeholder="Buscar libro para préstamo..." />
-                <button id="loan-btn" type="button">Prestar Libro</button>
-                <button id="return-btn" type="button">Devolver Libro</button>
+                <div class="loan-box">
+                    <input type="text" id="loan-book" placeholder="Buscar libro para préstamo..." />
+                    <div class="loan-buttons">
+                        <button class="loan-btn" id="loan-btn">📖 Prestar Libro</button>
+                        <button class="loan-btn return" id="return-btn">🔄 Devolver Libro</button>
+                    </div>
+                </div>
                 <ul id="loaned-books"></ul>
             </section>
 
+            <!-- Recomendaciones Personalizadas -->
             <section id="recommendations" class="section hidden">
                 <h2>Recomendaciones Personalizadas</h2>
                 <ul id="recommendation-list"></ul>
             </section>
         </main>
     </div>
-
     <script src="index.js"></script>
 </body>
 </html>
