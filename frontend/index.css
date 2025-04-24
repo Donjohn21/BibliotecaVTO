@@ -1,172 +1,257 @@
+/* Importar fuente moderna */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    /* Colores para modo claro */
+    --bg-color: #f4f4f4;
+    --text-color: #222;
+    --primary-color: #cd5b0a;
+    --sidebar-bg: #222;
+    --sidebar-text: #cd5b0a;
+    --header-bg: #ff6b00;
+    --card-bg: #ffffff;
+    --button-bg: #ff6b00;
+    --button-hover: #cc5500;
+}
+
+/* Colores para modo oscuro */
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --primary-color: #ff9500;
+    --sidebar-bg: #1e1e1e;
+    --sidebar-text: #ff9500;
+    --header-bg: #ff9500;
+    --card-bg: #1e1e1e;
+    --button-bg: #ff9500;
+    --button-hover: #cc7700;
+}
+
+/* Estilos generales */
+/* Estilos generales */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  padding-top: 60px; /* Espacio para el header fijo */
+}
+
+/* Header */
 header {
-    background-color: #8b5a2b;
-    padding: 15px;
+    background: var(--header-bg);
     color: white;
-    text-align: center;
-    position: fixed; /* Fija el header en la parte superior */
+    padding: 5px 15px; /* Mantener los márgenes originales */
+    text-align: left; /* Cambiar la alineación a izquierda */
+    font-size: 16px; /* Tamaño de fuente reducido */
+    font-weight: 600;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-start; /* Asegurarse de que el contenido esté alineado a la izquierda */
+    align-items: center;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* Asegura que el header esté por encima del contenido */
-    box-shadow: 0 4px 2px -2px gray; /* Agrega una sombra para destacar */
-  }
+    z-index: 1000;
+}
+
   
-  body {
-    font-family: Arial, sans-serif;
+/* Título en el header */
+header h1 {
     margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-    padding-top: 60px; /* Añadido para evitar que el contenido se quede debajo del header fijo */
-  }
-  
-  /* Otros estilos... */
-  
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-  }
-  
-  .logo {
-    font-size: 28px;
-    font-weight: 600;
-    color: #fff;
-  }
-  
-  .menu {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-  }
-  
-  .menu li a {
+    font-size: 20px; /* Tamaño ajustado del título */
+    padding-left: 10px; /* Ajuste del padding para mover el texto más hacia la izquierda */
+}
+
+/* Botón de modo oscuro */
+.toggle-mode {
+    background: var(--button-bg);
     color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    margin-left: 1250px; /* Mueve el botón hacia la derecha */
+}
+
+
+.toggle-mode:hover {
+    background: var(--button-hover);
+}
+
+/* Botón para abrir/cerrar sidebar */
+#toggle-sidebar-btn {
+  font-size: 20px; /* Ajusta el tamaño de la fuente */
+  background: var(--sidebar-bg);
+  color: white;
+  border: none;
+  padding: 5px 10px; /* Reducción del tamaño del botón */
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+#toggle-sidebar-btn:hover {
+  background: var(--primary-color);
+}
+
+/* Contenedor principal */
+.container {
+  display: flex;
+  margin-top: 10px; /* Espacio para el header */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: var(--sidebar-bg);
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  color: var(--sidebar-text);
+  box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  top: 30px; /* Deja el espacio para el header */
+}
+
+/* Ocultar sidebar */
+.sidebar-closed {
+    transform: translateX(-100%);
+}
+
+.content {
+  margin-left: 270px;
+  padding: 30px;
+  width: 100%;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Ajuste del sidebar cerrado */
+.sidebar-closed + .content {
+  margin-left: 20px;
+}
+
+/* Sidebar - navegación */
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar - navegación */
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+    color: var(--sidebar-text);
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .menu li a:hover {
-    color: #e3d5ca; /* Cambio de color suave para un efecto hover */
-  }
-  
-  .search-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-    position: relative;
-    left: -30px; /* Desplaza la barra de búsqueda un poco a la izquierda */
-  }
-  
-  .search-bar input {
-    padding: 10px;
-    border-radius: 25px;
-    border: 2px solid #ccc;
-    font-size: 16px;
-    width: 250px;
-    outline: none;
-    transition: border-color 0.3s ease;
-    transform: scale(1); /* Establece el tamaño inicial */
-    transition: transform 0.3s ease, border-color 0.3s ease; /* Agrega un efecto de movimiento */
-  }
-  
-  .search-bar input:focus {
-    border-color: #8b5a2b; /* Agrega un borde marrón cuando esté en foco */
-    transform: scale(1.05); /* Aumenta el tamaño cuando está enfocado */
-  }
-  
-  /* Estilos del catálogo de libros */
-  .book-section {
-    padding: 40px 20px;
-    text-align: center;
-  }
-  
-  .book-section h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #6b4222;
-    margin-bottom: 20px;
-  }
-  
-  .book-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-  }
-  
-  .book-card {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .book-card:hover {
-    transform: translateY(-10px); /* Efecto hover para una ligera elevación */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  }
-  
-  .book-image {
-    height: 200px;
-    background-color: #ddd;
-    margin-bottom: 15px;
+    padding: 12px;
     border-radius: 8px;
-  }
-  
-  .book-card h3 {
-    font-size: 18px;
-    color: #6b4222;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  
-  .book-card p {
-    font-size: 14px;
-    color: #8b5a2b;
     font-weight: 500;
-  }
-  
-  /* Footer */
-  footer {
-    background-color: #8b5a2b;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 60px;
-  }
-  
-  footer p {
-    font-size: 14px;
-    font-weight: 400;
-  }
-  
-  /* Estilos para los cuadros de información */
-  .info-box {
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+/* Estilos para las secciones */
+.section {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.hidden {
     display: none;
-    background-color: #8b5a2b;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 30px;
-    left: 0;
-    z-index: 10;
-    width: 200px;
-  }
-  
-  .menu li {
-    position: relative;
-  }
-  
-  .menu li a:hover + .info-box,
-  .menu li:hover .info-box {
-    display: block;
-  }
-  
-  
-  
+}
+
+/* Estilo de listas */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: var(--card-bg);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+li:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+}
+
+/* Botones */
+.reserve-btn, .cancel-btn {
+    background: var(--button-bg);
+    color: white;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out, transform 0.2s;
+}
+
+.reserve-btn:hover, .cancel-btn:hover {
+    background: var(--button-hover);
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 220px;
+    }
+
+    header h1 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Mismo código que ya tenías aquí... */
+/* Al final simplemente agrega estos estilos específicos si gustas destacarlas un poco más */
+
+#loaned-books li,
+#recommendation-list li {
+    border-left: 4px solid var(--primary-color);
+}

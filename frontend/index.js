@@ -1,57 +1,214 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Array de libros que coincide con el catálogo
-    const data = [
-      { title: "El retrato de Dorian Gray", author: "Oscar Wilde", available: true },
-      { title: "Ana Karenina", author: "León Tolstói", available: true },
-      { title: "Diez negritos", author: "Agatha Christie", available: false },
-      { title: "El código Da Vinci", author: "Dan Brown", available: true },
-      { title: "El guardián entre el centeno", author: "J.D. Salinger", available: true },
-      { title: "El proceso", author: "Franz Kafka", available: true },
-      { title: "Las aventuras de Alicia en el país de las maravillas", author: "Lewis Carroll", available: true },
-      { title: "Odisea", author: "Homero", available: false },
-      { title: "El Principito", author: "Antoine de Saint-Exupéry", available: true },
-      { title: "El Señor de los Anillos", author: "J.R.R. Tolkien", available: true },
-      { title: "Don Quijote de la Mancha", author: "Miguel de Cervantes", available: true },
-      { title: "Historia de dos ciudades", author: "Charles Dickens", available: true }
+    const availableBooks = [
+        { id: 1, title: "Cien años de soledad", genre: "Realismo mágico", author: "Gabriel García Márquez" },
+        { id: 2, title: "El principito", genre: "Fábula", author: "Antoine de Saint-Exupéry" },
+        { id: 3, title: "Don Quijote de la Mancha", genre: "Novela", author: "Miguel de Cervantes" }
     ];
-  
-    const searchInput = document.getElementById('search-bar');
-    const booksList = document.getElementById('booksList');
-    const searchResultsSection = document.getElementById('search-results-section');
-    const staticCatalog = document.getElementById('static-catalog');
-  
-    function displayBooks(filteredBooks) {
-      booksList.innerHTML = '';
-      filteredBooks.forEach(book => {
-        const bookElement = document.createElement('div');
-        bookElement.classList.add('book-card');
-        bookElement.innerHTML = `
-          <div class="book-image"></div>
-          <h3>${book.title}</h3>
-          <p>${book.author}</p>
-          <p><strong>Disponible:</strong> ${book.available ? 'Sí' : 'No'}</p>
-        `;
-        booksList.appendChild(bookElement);
-      });
-    }
-  
-    // Detectar cambios en el input de búsqueda
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase().trim();
-      if (query === "") {
-        // Si no hay búsqueda, se muestra el catálogo estático y se ocultan los resultados dinámicos
-        searchResultsSection.style.display = 'none';
-        staticCatalog.style.display = 'block';
-      } else {
-        // Si hay búsqueda, se muestran los resultados dinámicos y se oculta el catálogo estático
-        searchResultsSection.style.display = 'block';
-        staticCatalog.style.display = 'none';
-        const filteredBooks = data.filter(book =>
-          book.title.toLowerCase().includes(query)
-        );
-        displayBooks(filteredBooks);
-        addRecentSearch(query);
-      }
+
+    const MAX_RESERVATIONS = 3;
+    const MAX_LOANS = 3;
+
+    const reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+    const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const loans = JSON.parse(localStorage.getItem('loans')) || [];
+    const history = JSON.parse(localStorage.getItem('loanHistory')) || [];
+
+    const getEl = id => document.getElementById(id);
+    const availableBooksList = getEl('available-books');
+    const reservedBooksList = getEl('reserved-books');
+    const notificationsList = getEl('notifications');
+    const loanedBooksList = getEl('loaned-books');
+    const recommendationList = getEl('recommendation-list');
+    const searchInput = getEl('search-book');
+    const searchBtn = getEl('search-btn');
+    const sidebar = document.querySelector('.sidebar');
+    const toggleSidebarBtn = getEl('toggle-sidebar-btn');
+    const sections = document.querySelectorAll('.section');
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+
+    // Navegación
+    toggleSidebarBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('sidebar-closed');
     });
-  });
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const sectionId = e.target.dataset.section;
+            sections.forEach(sec => sec.classList.add('hidden'));
+            getEl(sectionId).classList.remove('hidden');
+        });
+    });
+
+    // Render Functions
+    function renderBooks(filter = "") {
+        availableBooksList.innerHTML = "";
+        const filtered = availableBooks.filter(book =>
+            !reservations.some(res => res.id === book.id) &&
+            !loans.some(loan => loan.id === book.id) &&
+            book.title.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        if (filtered.length === 0) {
+            availableBooksList.innerHTML = "<li>No hay libros disponibles.</li>";
+            return;
+        }
+
+        filtered.forEach(book => {
+            const li = document.createElement('li');
+            li.innerHTML = `${book.title} <button class="reserve-btn" data-id="${book.id}">Reservar</button>`;
+            availableBooksList.appendChild(li);
+        });
+    }
+
+    function renderReservations() {
+        reservedBooksList.innerHTML = "";
+        reservations.forEach(book => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                ${book.title}
+                <button class="cancel-btn" data-id="${book.id}">Cancelar</button>
+                <button class="loan-btn" data-id="${book.id}">Prestar</button>`;
+            reservedBooksList.appendChild(li);
+        });
+    }
+
+    function renderLoans() {
+        loanedBooksList.innerHTML = "";
+        loans.forEach(book => {
+            const li = document.createElement('li');
+            li.innerHTML = `${book.title} <button class="return-btn" data-id="${book.id}">Devolver</button>`;
+            loanedBooksList.appendChild(li);
+        });
+    }
+
+    function renderNotifications() {
+        notificationsList.innerHTML = "";
+        notifications.forEach(note => {
+            const li = document.createElement('li');
+            li.textContent = note;
+            notificationsList.appendChild(li);
+        });
+    }
+
+    function renderRecommendations() {
+        recommendationList.innerHTML = "";
+        const userGenres = history.map(h => h.genre);
+        const uniqueGenres = [...new Set(userGenres)];
+        const suggested = availableBooks.filter(book =>
+            uniqueGenres.includes(book.genre) && !history.some(h => h.id === book.id)
+        );
+
+        if (suggested.length === 0) {
+            recommendationList.innerHTML = "<li>No hay sugerencias por ahora.</li>";
+            return;
+        }
+
+        suggested.forEach(book => {
+            const li = document.createElement('li');
+            li.textContent = `${book.title} (${book.genre})`;
+            recommendationList.appendChild(li);
+        });
+    }
+
+    // Acciones
+    availableBooksList.addEventListener('click', e => {
+        if (!e.target.classList.contains('reserve-btn')) return;
+        const bookId = parseInt(e.target.dataset.id);
+        const book = availableBooks.find(b => b.id === bookId);
+
+        if (reservations.length >= MAX_RESERVATIONS) {
+            alert(`Máximo de reservas alcanzado (${MAX_RESERVATIONS}).`);
+            return;
+        }
+
+        reservations.push(book);
+        localStorage.setItem('reservations', JSON.stringify(reservations));
+        renderBooks();
+        renderReservations();
+    });
+
+    reservedBooksList.addEventListener('click', e => {
+        const bookId = parseInt(e.target.dataset.id);
+        const book = reservations.find(b => b.id === bookId);
+
+        if (e.target.classList.contains('cancel-btn')) {
+            reservations.splice(reservations.indexOf(book), 1);
+            notifications.push(`El libro "${book.title}" ha sido liberado.`);
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+        } else if (e.target.classList.contains('loan-btn')) {
+            if (loans.length >= MAX_LOANS) {
+                alert(`Máximo de préstamos alcanzado (${MAX_LOANS}).`);
+                return;
+            }
+
+            loans.push(book);
+            history.push(book);
+            reservations.splice(reservations.indexOf(book), 1);
+            localStorage.setItem('loans', JSON.stringify(loans));
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+            localStorage.setItem('loanHistory', JSON.stringify(history));
+        }
+
+        renderBooks();
+        renderReservations();
+        renderLoans();
+        renderNotifications();
+        renderRecommendations();
+    });
+
+    loanedBooksList.addEventListener('click', e => {
+        if (!e.target.classList.contains('return-btn')) return;
+        const bookId = parseInt(e.target.dataset.id);
+        const index = loans.findIndex(b => b.id === bookId);
+        loans.splice(index, 1);
+        localStorage.setItem('loans', JSON.stringify(loans));
+        renderBooks();
+        renderLoans();
+    });
+
+    searchBtn.addEventListener('click', () => {
+        const filter = searchInput.value.trim();
+        renderBooks(filter);
+    });
+
+    // Inicialización
+    renderBooks();
+    renderReservations();
+    renderNotifications();
+    renderLoans();
+    renderRecommendations();
+});
+
+// Dark Mode
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
   
+// Referencia al botón de modo oscuro
+const toggleModeButton = document.querySelector('.toggle-mode');
+
+// Comprobar si hay un tema guardado en el localStorage (si es el caso, aplicarlo)
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode'); // Aplicar el modo oscuro
+    toggleModeButton.textContent = '🌞 '; // Cambiar el ícono del botón a sol
+} else {
+    document.body.classList.remove('dark-mode'); // Asegurarse de que el modo claro esté activo
+    toggleModeButton.textContent = '🌙 '; // Mantener el ícono de luna
+}
+
+// Función para cambiar el modo oscuro y claro
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode'); // Cambiar el tema
+    if (document.body.classList.contains('dark-mode')) {
+        toggleModeButton.textContent = '🌞'; // Si está en modo oscuro, mostrar el sol
+        localStorage.setItem('theme', 'dark'); // Guardar el modo oscuro en localStorage
+    } else {
+        toggleModeButton.textContent = '🌙 '; // Si está en modo claro, mostrar la luna
+        localStorage.setItem('theme', 'light'); // Guardar el modo claro en localStorage
+    }
+}
+
+

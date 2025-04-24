@@ -1,4 +1,26 @@
-/* Estilos mejorados para el login */
+/* Importar fuente moderna */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --bg-color: #f4f4f4;
+    --text-color: #222;
+    --primary-color: #cd5b0a;
+    --header-bg: #ff6b00;
+    --card-bg: #ffffff;
+    --button-bg: #ff6b00;
+    --button-hover: #cc5500;
+}
+
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --primary-color: #ff9500;
+    --header-bg: #ff9500;
+    --card-bg: #1e1e1e;
+    --button-bg: #ff9500;
+    --button-hover: #cc7700;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,37 +29,40 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f5f1e3, #e3d5ca);
+    background: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     padding: 20px;
+    transition: all 0.3s ease-in-out;
 }
 
 h2 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: #6b4222;
+    color: var(--primary-color);
 }
 
-/* Estilos para el contenedor del formulario */
+/* Contenedores de login/registro */
 .login-container, .register-container {
-    background: white;
+    background: var(--card-bg);
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
     text-align: center;
     width: 350px;
-    display: none; /* Inicialmente oculto */
+    display: none;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Estilos para el contenedor de login */
+/* Mostrar login por defecto */
 .login-container {
-    display: block; /* Login container se muestra por defecto */
+    display: block;
 }
 
-/* Estilos para los campos de entrada */
+/* Inputs */
 .input-group {
     position: relative;
     margin-bottom: 20px;
@@ -51,17 +76,19 @@ h2 {
     font-size: 16px;
     transition: all 0.3s ease;
     outline: none;
+    background: var(--card-bg);
+    color: var(--text-color);
 }
 
 .input-group input:focus {
-    border-color: #8b5a2b;
+    border-color: var(--primary-color);
 }
 
-/* Estilos para los botones */
+/* Botones */
 .btn {
     width: 100%;
     padding: 12px;
-    background: #8b5a2b;
+    background: var(--button-bg);
     color: white;
     border: none;
     border-radius: 8px;
@@ -71,69 +98,42 @@ h2 {
 }
 
 .btn:hover {
-    background: #6b4222;
+    background: var(--button-hover);
     transform: translateY(-2px);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos para los enlaces de navegación entre formularios */
+/* Enlaces */
 a {
     text-decoration: none;
-    color: #8b5a2b;
+    color: var(--primary-color);
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #6b4222;
+    color: var(--button-hover);
 }
 
-/* Estilos para el formulario de registro */
-.register-container {
-    display: none; /* Oculto inicialmente */
-}
-
+/* Registro */
 .register-container h2 {
-    margin-bottom: 20px;
-    font-weight: 600;
-    color: #6b4222;
-}
-
-.register-container .input-group {
-    margin-bottom: 20px;
-}
-
-.register-container .input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    outline: none;
+    color: var(--primary-color);
 }
 
 .register-container .input-group input:focus {
-    border-color: #8b5a2b;
+    border-color: var(--primary-color);
 }
 
-/* Mejoras para los botones */
 .register-container .btn {
-    background-color: #8b5a2b;
-    border-radius: 8px;
+    background-color: var(--button-bg);
     color: white;
-    font-size: 16px;
-    width: 100%;
-    padding: 12px;
-    cursor: pointer;
 }
 
 .register-container .btn:hover {
-    background: #6b4222;
+    background: var(--button-hover);
 }
 
-/* Opcionalmente, puedes añadir un pequeño margen inferior al contenedor de login o registro para dar espacio entre el formulario y los enlaces */
+/* Margen para links abajo */
 .register-container p, .login-container p {
     margin-top: 10px;
 }
-
