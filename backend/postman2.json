@@ -1,0 +1,383 @@
+{
+    "info": {
+      "_postman_id": "biblioteca-collection",
+      "name": "Biblioteca API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": "Colección completa para probar el sistema de biblioteca con diferentes roles"
+    },
+    "item": [
+      {
+        "name": "Autenticación",
+        "item": [
+          {
+            "name": "Registro de Usuario",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Usuario Prueba\",\n    \"email\": \"usuario@test.com\",\n    \"password\": \"password123\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/auth/register",
+                "host": ["{{base_url}}"],
+                "path": ["api","auth","register"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Login Usuario Normal",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"usuario@test.com\",\n    \"password\": \"password123\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/auth/login",
+                "host": ["{{base_url}}"],
+                "path": ["api","auth","login"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Login Bibliotecario",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"bibliotecario@test.com\",\n    \"password\": \"password123\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/auth/login",
+                "host": ["{{base_url}}"],
+                "path": ["api","auth","login"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Login Administrador",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"admin@test.com\",\n    \"password\": \"password123\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/auth/login",
+                "host": ["{{base_url}}"],
+                "path": ["api","auth","login"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Administrador",
+        "item": [
+          {
+            "name": "Crear Usuario (Admin)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{admin_token}}"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Nuevo Usuario\",\n    \"email\": \"nuevo@test.com\",\n    \"password\": \"password123\",\n    \"roleId\": 1\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/users",
+                "host": ["{{base_url}}"],
+                "path": ["api","users"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Listar Todos los Usuarios (Admin)",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{admin_token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/users",
+                "host": ["{{base_url}}"],
+                "path": ["api","users"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Actualizar Usuario (Admin)",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{admin_token}}"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Usuario Modificado\",\n    \"email\": \"modificado@test.com\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/users/1",
+                "host": ["{{base_url}}"],
+                "path": ["api","users","1"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Eliminar Usuario (Admin)",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{admin_token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/users/1",
+                "host": ["{{base_url}}"],
+                "path": ["api","users","1"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Bibliotecario",
+        "item": [
+          {
+            "name": "Crear Libro (Bibliotecario)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{librarian_token}}"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"Nuevo Libro\",\n    \"author\": \"Autor del Libro\",\n    \"isbn\": \"1234567890123\",\n    \"totalCopies\": 5\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/books",
+                "host": ["{{base_url}}"],
+                "path": ["api","books"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Registrar Préstamo (Bibliotecario)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{librarian_token}}"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"bookId\": 1,\n    \"userId\": 2\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/loans",
+                "host": ["{{base_url}}"],
+                "path": ["api","loans"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Registrar Devolución (Bibliotecario)",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{librarian_token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/loans/1/return",
+                "host": ["{{base_url}}"],
+                "path": ["api","loans","1","return"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Usuario Normal",
+        "item": [
+          {
+            "name": "Ver Perfil (Usuario)",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{user_token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/auth/me",
+                "host": ["{{base_url}}"],
+                "path": ["api","auth","me"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Listar Libros (Usuario)",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{user_token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/books",
+                "host": ["{{base_url}}"],
+                "path": ["api","books"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Crear Reserva (Usuario)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{user_token}}"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"bookId\": 1\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/api/reservations",
+                "host": ["{{base_url}}"],
+                "path": ["api","reservations"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Ver Mis Préstamos (Usuario)",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{user_token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/users/{{user_id}}/loans",
+                "host": ["{{base_url}}"],
+                "path": ["api","users","{{user_id}}","loans"]
+              }
+            },
+            "response": []
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:5000"
+      },
+      {
+        "key": "admin_token",
+        "value": ""
+      },
+      {
+        "key": "librarian_token",
+        "value": ""
+      },
+      {
+        "key": "user_token",
+        "value": ""
+      },
+      {
+        "key": "user_id",
+        "value": ""
+      }
+    ]
+  }

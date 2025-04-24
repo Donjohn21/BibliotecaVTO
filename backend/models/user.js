@@ -1,25 +1,54 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');  // Para encriptar contraseñas
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.ENUM('active', 'suspended', 'banned'),
+      defaultValue: 'active'
+    },
+    penaltyCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    lastPenaltyDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    }
+  });
 
-// Esquema del usuario
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true, unique: true }
-});
+  User.associate = (models) => {
+    User.belongsTo(models.Role, {
+      foreignKey: 'roleId',
+      as: 'role'
+    });
+    User.hasMany(models.Loan, {
+      foreignKey: 'userId',
+      as: 'loans'
+    });
+    User.hasMany(models.Reservation, {
+      foreignKey: 'userId',
+      as: 'reservations'
+    });
+  };
 
-// Encriptar la contraseña antes de guardarla
-userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-});
-
-// Método para comparar contraseñas
-userSchema.methods.comparePassword = async function(password) {
-    return await bcrypt.compare(password, this.password);
+  return User;
 };
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;

@@ -1,38 +1,126 @@
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');  // Para crear tokens JWT
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { User, Role } = require('../models/index');
+const { validationResult } = require('express-validator');
+const config = require('../config/auth');
 
-// Registrar un nuevo usuario
 exports.register = async (req, res) => {
-    const { username, password, email } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    try {
-        const user = new User({ username, password, email });
-        await user.save();
-        res.status(201).json({ message: 'Usuario registrado con éxito' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error al registrar el usuario', error: err });
+  try {
+    const { name, email, password } = req.body;
+
+    // Check if user exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
     }
+
+    // Get default role (user)
+    const defaultRole = await Role.findOne({ where: { name: 'user' } });
+    if (!defaultRole) {
+      return res.status(500).json({ message: 'Default role not found' });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      roleId: defaultRole.id
+    });
+
+    // Create token
+    const token = jwt.sign({ id: user.id }, config.jwtSecret, {
+      expiresIn: config.jwtExpire
+    });
+
+    res.status(201).json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: defaultRole.name
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
 
-// Iniciar sesión
 exports.login = async (req, res) => {
-    const { username, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    try {
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
-        }
+  try {
+    const { email, password } = req.body;
 
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Contraseña incorrecta' });
-        }
+    // Check if user exists
+    const user = await User.findOne({
+      where: { email },
+      include: [{ model: Role, as: 'role' }]
+    });
 
-        // Crear un JWT
-        const token = jwt.sign({ userId: user._id }, 'mi_clave_secreta', { expiresIn: '1h' });
-        res.status(200).json({ message: 'Inicio de sesión exitoso', token });
-    } catch (err) {
-        res.status(500).json({ message: 'Error al iniciar sesión', error: err });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
+
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    // Check if user is active
+    if (user.status !== 'active') {
+      return res.status(403).json({ message: 'Account is suspended or banned' });
+    }
+
+    // Create token
+    const token = jwt.sign({ id: user.id }, config.jwtSecret, {
+      expiresIn: config.jwtExpire
+    });
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role.name
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+exports.getMe = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: { exclude: ['password'] },
+      include: [{ model: Role, as: 'role' }]
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
 };
